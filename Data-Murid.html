@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Murid</title>
+  <link rel="stylesheet" href="Data-Murid.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo Loyal.png" alt="Logo Taekwondo">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="Data-Murid.html">📖 Data Murid</a></li>
+          <li><a href="Absensi.html">📝 Absensi</a></li>
+          <li><a href="Bayaran.html">💰 Bayaran</a></li>
+          <li><a href="event-management.html">🎯 Event Management</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Konten utama -->
+    <main class="content">
+      <header>
+        <h1>Data Murid TKD Kelurahan</h1>
+        <div class="header-actions" id="headerActions">
+            <span id="welcomeMessage">Welcome, User</span>
+            <button id="logoutBtn" class="primary">Logout</button>
+        </div>
+      </header>
+
+      <!-- HAPUS "h1 Data Murid" YANG INI -->
+
+      <div class="center">
+        <button id="addMuridBtn">+ Tambah Murid</button>
+      </div>
+
+      <div id="muridFormContainer" style="display:none;">
+        <form id="muridForm">
+          <input type="hidden" id="editIndex" />
+
+          <label>Nama:</label>
+          <input type="text" id="nama" required>
+
+          <label>Jenis Kelamin:</label>
+          <select id="jenisKelamin" required>
+            <option value="">-- Pilih --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+
+          <label>Tempat Lahir:</label>
+          <input type="text" id="tempatLahir" required placeholder="Kota tempat lahir">
+
+          <label>Tanggal Lahir:</label>
+          <input type="date" id="tanggalLahir" required>
+
+          <label>Alamat:</label>
+          <input type="text" id="alamat" required>
+
+          <label>Nomor Telepon:</label>
+          <input type="tel" id="noTelepon" required placeholder="08xxxxxxxxxx">
+
+          <label>Tanggal Bergabung:</label>
+          <input type="date" id="tanggalGabung" required>
+
+          <label>Sabuk:</label>
+          <select id="sabuk" required>
+            <option value="">-- Pilih Sabuk --</option>
+            <option value="Putih">Putih</option>
+            <option value="Kuning">Kuning</option>
+            <option value="Kuning Strip">Kuning Strip</option>
+            <option value="Hijau">Hijau</option>
+            <option value="Hijau Strip">Hijau Strip</option>
+            <option value="Biru">Biru</option>
+            <option value="Biru Strip">Biru Strip</option>
+            <option value="Merah">Merah</option>
+            <option value="Merah Strip I">Merah Strip I</option>
+            <option value="Merah Strip II">Merah Strip II</option>
+            <option value="Hitam">Hitam</option>
+          </select>
+
+          <button type="submit">Simpan</button>
+          <button type="button" id="cancelBtn">Batal</button>
+        </form>
+      </div>
+
+      <!-- TABLE CONTAINER BARU -->
+      <div class="table-container">
+        <div class="table-wrap">
+          <table id="tabelMurid">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th class="sortable" data-sort="nama">Nama</th>
+                <th>Jenis Kelamin</th>
+                <th>Tempat, Tanggal Lahir</th>
+                <th>No. Telepon</th>
+                <th>Alamat</th>
+                <th>Tanggal Bergabung</th>
+                <th class="sortable" data-sort="sabuk">Sabuk</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  
+  <!-- AUTH CHECK + HEADER MANAGEMENT -->
+  <script>
+  (function() {
+      // Auth check
+      const session = localStorage.getItem('taekwondo_session');
+      if (!session) {
+          window.location.href = 'login.html';
+          return;
+      }
+
+      const sessionData = JSON.parse(session);
+      const twoHours = 2 * 60 * 60 * 1000;
+      
+      if (Date.now() - sessionData.loginTime > twoHours) {
+          localStorage.removeItem('taekwondo_session');
+          window.location.href = 'login.html';
+          return;
+      }
+
+      // Role-based access control
+      const user = sessionData.user;
+      const currentPage = window.location.pathname.split('/').pop();
+      
+      if (user.role === 'pengajar' && currentPage !== 'Absensi.html') {
+          window.location.href = 'Absensi.html';
+          return;
+      }
+
+      // HEADER MANAGEMENT
+      document.getElementById('welcomeMessage').textContent = `Welcome, ${user.nama}`;
+      
+      // Add User Management button for admin
+      if (user.role === 'admin') {
+          const headerActions = document.getElementById('headerActions');
+          const userMgmtBtn = document.createElement('a');
+          userMgmtBtn.href = 'user-management.html';
+          userMgmtBtn.className = 'primary';
+          userMgmtBtn.textContent = '👥 User Management';
+          userMgmtBtn.style.marginRight = '10px';
+          userMgmtBtn.style.textDecoration = 'none';
+          userMgmtBtn.style.padding = '8px 12px';
+          userMgmtBtn.style.display = 'inline-block';
+          
+          headerActions.insertBefore(userMgmtBtn, document.getElementById('logoutBtn'));
+      }
+
+      // Logout functionality
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+          localStorage.removeItem('taekwondo_session');
+          window.location.href = 'login.html';
+      });
+
+  })();
+  </script>
+
+  <script src="Data-Murid.js"></script>
+</body>
+</html>

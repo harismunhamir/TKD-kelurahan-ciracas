@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Event - Taekwondo</title>
+    <link rel="stylesheet" href="Bayaran.css">
+    <style>
+        .event-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .event-info {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px 20px;
+            align-items: center;
+        }
+        
+        .event-info strong {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .participant-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .status-toggle {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .status-toggle button {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .event-type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .event-ukt {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .event-pertandingan {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .sortable {
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            padding-right: 20px;
+        }
+
+        .sortable::after {
+            content: '↕';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
+            font-size: 0.8em;
+        }
+
+        .sortable:hover {
+            background-color: rgba(52, 73, 94, 0.15);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="Logo Loyal.png" alt="Logo Taekwondo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Data-Murid.html">📖 Data Murid</a></li>
+                    <li><a href="Absensi.html">📝 Absensi</a></li>
+                    <li><a href="Bayaran.html">💰 Bayaran</a></li>
+                    <li><a href="event-management.html">🎯 Event Management</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>Detail Event</h1>
+                <div class="header-actions" id="headerActions">
+                    <span id="welcomeMessage">Welcome, User</span>
+                    <button onclick="goBack()" class="secondary">⬅ Kembali</button>
+                    <button id="logoutBtn" class="primary">Logout</button>
+                </div>
+            </header>
+
+            <!-- Event Header -->
+            <div class="event-header">
+                <div class="event-info">
+                    <strong>Jenis Event:</strong>
+                    <span id="eventJenis" class="event-type-badge">-</span>
+                    
+                    <strong>Nama Event:</strong>
+                    <span id="eventNama">-</span>
+                    
+                    <strong>Waktu:</strong>
+                    <span id="eventWaktu">-</span>
+                    
+                    <strong>Total Peserta:</strong>
+                    <span id="eventPesertaCount">0</span>
+                </div>
+            </div>
+
+            <!-- Add Participant Panel -->
+            <section class="panel">
+                <h3>Tambah Peserta Manual</h3>
+                <form id="addParticipantForm">
+                    <input type="hidden" id="currentEventId">
+                    
+                    <div class="form-group">
+                        <label for="selectMurid">Pilih Murid:</label>
+                        <select id="selectMurid" required>
+                            <option value="">-- Pilih Murid --</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Conditional Fields -->
+                    <div id="uktFields" class="form-group hidden">
+                        <label for="noRegistrasi">No. Registrasi:</label>
+                        <input type="text" id="noRegistrasi" placeholder="Contoh: TRD001">
+                    </div>
+                    
+                    <div id="pertandinganFields" class="form-group hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label for="tinggiBadan">Tinggi Badan (cm):</label>
+                                <input type="number" id="tinggiBadan" placeholder="170">
+                            </div>
+                            <div>
+                                <label for="beratBadan">Berat Badan (kg):</label>
+                                <input type="number" id="beratBadan" placeholder="65">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="kategori">Kategori:</label>
+                            <select id="kategori">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="Kyorugi Pemula">Kyorugi Pemula</option>
+                                <option value="Kyorugi Prestasi">Kyorugi Prestasi</option>
+                                <option value="Poomsae Pemula">Poomsae Pemula</option>
+                                <option value="Poomsae Prestasi">Poomsae Prestasi</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="primary">Tambah Peserta</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Participants List -->
+            <section class="panel">
+                <h3>Daftar Peserta</h3>
+                <div class="participant-actions">
+                    <button class="primary" onclick="copyRegistrationLink()">📋 Copy Link Pendaftaran</button>
+                    <span style="margin-left: auto; font-size: 0.9rem; color: #666;">
+                        Legend: □=Belum, ☑️=Sudah
+                    </span>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-wrap">
+                        <table id="participantsTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="nama">Nama</th>
+                                    <th class="sortable" data-sort="sabuk">Sabuk</th>
+                                    <th>Tempat, Tanggal Lahir</th>
+                                    <th>Data Event</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participantsTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 20px;">
+                                        Loading peserta...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- Auth Check -->
+    <script>
+    (function() {
+        const session = localStorage.getItem('taekwondo_session');
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const sessionData = JSON.parse(session);
+        const twoHours = 2 * 60 * 60 * 1000;
+        
+        if (Date.now() - sessionData.loginTime > twoHours) {
+            localStorage.removeItem('taekwondo_session');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Only admin can access this page
+        if (sessionData.user.role !== 'admin') {
+            window.location.href = 'Data-Murid.html';
+            return;
+        }
+
+        document.getElementById('welcomeMessage').textContent = `Welcome, ${sessionData.user.nama}`;
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('taekwondo_session');
+            window.location.href = 'login.html';
+        });
+
+        // Get event ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('event');
+        
+        if (!eventId) {
+            window.location.href = 'event-management.html';
+            return;
+        }
+        
+        document.getElementById('currentEventId').value = eventId;
+        
+    })();
+
+    function goBack() {
+        window.location.href = 'event-management.html';
+    }
+    </script>
+    
+    <!-- Event Detail Script -->
+    <script src="event-detail.js"></script>
+</body>
+</html>

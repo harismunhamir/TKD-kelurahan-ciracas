@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Taekwondo</title>
+    <link rel="stylesheet" href="Bayaran.css">
+    <style>
+        .user-management-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .user-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .user-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .user-form .form-group {
+            margin-bottom: 0;
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .users-table th,
+        .users-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .users-table th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .role-admin {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .role-pengajar {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .status-active {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .status-inactive {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .user-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Tambahkan di style user-management.html */
+.danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.danger:hover {
+    background: #c0392b;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="Logo Loyal.png" alt="Logo Taekwondo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Data-Murid.html">📖 Data Murid</a></li>
+                    <li><a href="Absensi.html">📝 Absensi</a></li>
+                    <li><a href="Bayaran.html">💰 Bayaran</a></li>
+                    <li><a href="user-management.html" class="active">👥 User Management</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>User Management</h1>
+                <div class="header-actions">
+                    <span id="welcomeMessage">Welcome, Admin</span>
+                    <button id="logoutBtn" class="primary">Logout</button>
+                </div>
+            </header>
+
+            <!-- Add User Card -->
+            <section class="user-card">
+                <h3>Tambah User Baru</h3>
+                <form id="addUserForm" class="user-form">
+                    <div class="form-group">
+                        <label for="newUsername">Username:</label>
+                        <input type="text" id="newUsername" required class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newNama">Nama Lengkap:</label>
+                        <input type="text" id="newNama" required class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">Password:</label>
+                        <input type="password" id="newPassword" required class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newRole">Role:</label>
+                        <select id="newRole" required class="form-select">
+                            <option value="admin">Admin</option>
+                            <option value="pengajar">Pengajar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="primary">Tambah User</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Users List -->
+            <section class="user-card">
+                <h3>Daftar Users</h3>
+                <div class="table-container">
+                    <div class="table-wrap">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Nama</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 20px;">
+                                        Loading data users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm">
+                    <input type="hidden" id="resetUserId">
+                    <div class="form-group">
+                        <label>Password Baru:</label>
+                        <input type="password" id="newPasswordReset" required class="form-input" placeholder="Masukkan password baru">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary">Reset Password</button>
+                        <button type="button" id="cancelReset" class="secondary">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- Auth Check -->
+    <script>
+    (function() {
+        const session = localStorage.getItem('taekwondo_session');
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const sessionData = JSON.parse(session);
+        const twoHours = 2 * 60 * 60 * 1000;
+        
+        if (Date.now() - sessionData.loginTime > twoHours) {
+            localStorage.removeItem('taekwondo_session');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Only admin can access this page
+        if (sessionData.user.role !== 'admin') {
+            window.location.href = 'Data-Murid.html';
+            return;
+        }
+
+        // Set welcome message
+        document.getElementById('welcomeMessage').textContent = 
+            `Welcome, ${sessionData.user.nama}`;
+    })();
+    </script>
+    
+    <!-- User Management Script -->
+    <script src="user-management.js"></script>
+</body>
+</html>

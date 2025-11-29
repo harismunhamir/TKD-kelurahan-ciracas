@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Event - Taekwondo</title>
+    <link rel="stylesheet" href="Bayaran.css">
+    <style>
+        .registration-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .event-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .event-banner h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+        
+        .event-banner .event-info {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px 15px;
+            text-align: left;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .event-banner strong {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .registration-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .student-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .conditional-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .conditional-section h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-message h2 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <!-- Event Banner -->
+        <div class="event-banner" id="eventBanner">
+            <h1>Pendaftaran Event Taekwondo</h1>
+            <p>Form pendaftaran untuk orang tua/wali murid</p>
+            
+            <div class="event-info" id="eventInfo">
+                <!-- Event info will be loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registrationForm" class="registration-form">
+            <h3>Form Pendaftaran</h3>
+            
+            <form id="participantForm">
+                <input type="hidden" id="eventId">
+                
+                <div class="form-group">
+                    <label for="selectMurid">Pilih Nama Murid:</label>
+                    <select id="selectMurid" required>
+                        <option value="">-- Pilih Nama Murid --</option>
+                    </select>
+                </div>
+                
+                <!-- Auto-filled Student Info -->
+                <div id="studentInfo" class="student-info hidden">
+                    <h4>Data Murid</h4>
+                    <div class="student-info-grid" id="studentInfoGrid">
+                        <!-- Student info will be auto-filled -->
+                    </div>
+                </div>
+
+                <!-- Conditional Fields - UKT -->
+                <div id="uktFields" class="conditional-section hidden">
+                    <h4>📝 Data UKT</h4>
+                    <div class="form-group">
+                        <label for="noRegistrasi">No. Registrasi:</label>
+                        <input type="text" id="noRegistrasi" required placeholder="Contoh: TRD001">
+                    </div>
+                </div>
+
+                <!-- Conditional Fields - Pertandingan -->
+                <div id="pertandinganFields" class="conditional-section hidden">
+                    <h4>🥋 Data Pertandingan</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="tinggiBadan">Tinggi Badan (cm):</label>
+                            <input type="number" id="tinggiBadan" required placeholder="170">
+                        </div>
+                        <div class="form-group">
+                            <label for="beratBadan">Berat Badan (kg):</label>
+                            <input type="number" id="beratBadan" required placeholder="65">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="kategori">Kategori:</label>
+                        <select id="kategori" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="Kyorugi Pemula">Kyorugi Pemula</option>
+                            <option value="Kyorugi Prestasi">Kyorugi Prestasi</option>
+                            <option value="Poomsae Pemula">Poomsae Pemula</option>
+                            <option value="Poomsae Prestasi">Poomsae Prestasi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                        📨 DAFTAR SEKARANG
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="registration-form success-message hidden">
+            <h2>✅ Pendaftaran Berhasil!</h2>
+            <p>Data murid telah berhasil didaftarkan ke event.</p>
+            <p><strong>Silakan tunggu konfirmasi lebih lanjut dari admin dojo.</strong></p>
+            <button onclick="resetForm()" class="primary">Daftarkan Murid Lain</button>
+        </div>
+
+        <!-- Participants List -->
+        <div class="registration-form" id="participantsList" style="margin-top: 30px;">
+            <h3>📋 Daftar Peserta yang Sudah Mendaftar</h3>
+            <div class="table-container">
+                <div class="table-wrap">
+                    <table id="participantsTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Sabuk</th>
+                                <th>Data Event</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participantsTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 20px;">
+                                    Loading data peserta...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- Event Registration Script -->
+    <script src="event-registration.js"></script>
+</body>
+</html>

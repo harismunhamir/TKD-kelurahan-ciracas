@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Absensi Taekwondo</title>
+  <link rel="stylesheet" href="Absensi.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="Logo Loyal.png" alt="Logo Taekwondo">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="Data-Murid.html">📖 Data Murid</a></li>
+          <li><a href="Absensi.html" class="active">📝 Absensi</a></li>
+          <li><a href="Bayaran.html">💰 Bayaran</a></li>
+          <li><a href="event-management.html">🎯 Event Management</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Konten utama -->
+    <main class="content">
+      <header>
+         <h1>Absensi Taekwondo</h1>
+    <div class="header-actions" id="headerActions">
+        <span id="welcomeMessage">Welcome, User</span>
+        <button id="logoutBtn" class="primary">Logout</button>
+    </div>
+      </header>
+
+      <section class="mode-select">
+        <button id="btnPengisian" class="mode-btn active">📝 Pengisian Absen</button>
+        <button id="btnHistory" class="mode-btn">📜 History Absen</button>
+      </section>
+
+      <!-- PENGISIAN -->
+      <section id="pengisianSection" class="panel">
+        <!-- Student Selection Panel akan ditambahkan secara dinamis oleh JavaScript -->
+        
+        <div class="toolbar">
+          <div class="left">
+            <label for="newDateInput">Tambah Tanggal:</label>
+            <input id="newDateInput" type="date" />
+            <button id="addTanggalBtn">Add Tanggal</button>
+          </div>
+          <div class="right">
+            <button id="saveAttendanceBtn" class="primary">Simpan Absen</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrap">
+            <table id="attendanceTable">
+              <thead>
+                <tr id="attendanceHeadRow">
+                  <th>Nama</th>
+                  <th class="sortable" data-sort="nama">Nama ▲</th>
+                  <th class="sortable" data-sort="sabuk">Sabuk</th>
+                  <th class="sortable" data-sort="usia">Usia</th>
+                  <th>Sabuk</th>
+                  <th>Usia</th>
+                  <th>Lama Latihan</th>
+                  <!-- Kolom tanggal akan ditambahkan secara dinamis -->
+                </tr>
+              </thead>
+              <tbody id="attendanceBody">
+                <tr>
+                  <td colspan="4" style="text-align: center; padding: 20px;">
+                    Pilih murid terlebih dahulu dan tambahkan tanggal absensi
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="historySection" class="panel hidden">
+        <div class="toolbar">
+          <div class="left">
+            <label for="historyMonth">Pilih Bulan:</label>
+            <input id="historyMonth" type="month" />
+            <button id="loadHistoryBtn" class="primary">Load History</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrap">
+            <table id="historyTable">
+              <thead>
+                <tr id="historyHeadRow">
+                  <th class="sortable" data-sort="nama">Nama</th>
+                  <th class="sortable" data-sort="sabuk">Sabuk</th>
+                  <th class="sortable" data-sort="usia">Usia</th>
+                  <th>Lama Latihan</th>
+                  <!-- Kolom tanggal akan ditambahkan secara dinamis -->
+                </tr>
+              </thead>
+              <tbody id="historyBody">
+                <tr>
+                  <td colspan="4" style="text-align: center; padding: 20px;">
+                    Pilih bulan dan tahun untuk melihat history absensi
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Supabase UMD -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<!-- AUTH CHECK + HEADER MANAGEMENT -->
+<script>
+(function() {
+    // Auth check
+    const session = localStorage.getItem('taekwondo_session');
+    if (!session) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const sessionData = JSON.parse(session);
+    const twoHours = 2 * 60 * 60 * 1000;
+    
+    if (Date.now() - sessionData.loginTime > twoHours) {
+        localStorage.removeItem('taekwondo_session');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Role-based access control
+    const user = sessionData.user;
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    if (user.role === 'pengajar' && currentPage !== 'Absensi.html') {
+        window.location.href = 'Absensi.html';
+        return;
+    }
+
+    // HEADER MANAGEMENT
+    document.getElementById('welcomeMessage').textContent = `Welcome, ${user.nama}`;
+    
+    // Add User Management button for admin
+    if (user.role === 'admin') {
+        const headerActions = document.getElementById('headerActions');
+        const userMgmtBtn = document.createElement('a');
+        userMgmtBtn.href = 'user-management.html';
+        userMgmtBtn.className = 'primary';
+        userMgmtBtn.textContent = '👥 User Management';
+        userMgmtBtn.style.marginRight = '10px';
+        userMgmtBtn.style.textDecoration = 'none';
+        userMgmtBtn.style.padding = '8px 12px';
+        userMgmtBtn.style.display = 'inline-block';
+        
+        headerActions.insertBefore(userMgmtBtn, document.getElementById('logoutBtn'));
+    }
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        localStorage.removeItem('taekwondo_session');
+        window.location.href = 'login.html';
+    });
+
+})();
+</script>
+
+  <!-- Script lokal -->
+  <script src="Absensi.js"></script>
+</body>
+</html>

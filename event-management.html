@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Taekwondo</title>
+    <link rel="stylesheet" href="Bayaran.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="Logo Loyal.png" alt="Logo Taekwondo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Data-Murid.html">📖 Data Murid</a></li>
+                    <li><a href="Absensi.html">📝 Absensi</a></li>
+                    <li><a href="Bayaran.html">💰 Bayaran</a></li>
+                    <li><a href="event-management.html" class="active">🎯 Event Management</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>Event Management</h1>
+                <div class="header-actions" id="headerActions">
+                    <span id="welcomeMessage">Welcome, User</span>
+                    <button id="logoutBtn" class="primary">Logout</button>
+                </div>
+            </header>
+
+            <!-- Create Event Panel -->
+            <section class="panel">
+                <h3>Buat Event Baru</h3>
+                <form id="createEventForm">
+                    <div class="form-group">
+                        <label for="jenisEvent">Jenis Event:</label>
+                        <select id="jenisEvent" required>
+                            <option value="">-- Pilih Jenis Event --</option>
+                            <option value="UKT">UKT (Ujian Kenaikan Tingkat)</option>
+                            <option value="Pertandingan">Pertandingan</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="namaEvent">Nama Event:</label>
+                        <input type="text" id="namaEvent" required placeholder="Contoh: Ujian Sabuk Hijau Maret 2024">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="waktuEvent">Waktu Event:</label>
+                        <input type="datetime-local" id="waktuEvent" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="primary">Buat Event</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Events List -->
+            <section class="panel">
+                <h3>Daftar Event</h3>
+                <div class="table-container">
+                    <div class="table-wrap">
+                        <table id="eventsTable">
+                            <thead>
+                                <tr>
+                                    <th>Jenis</th>
+                                    <th>Nama Event</th>
+                                    <th>Waktu</th>
+                                    <th>Jumlah Peserta</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 20px;">
+                                        Loading events...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- Auth Check -->
+    <script>
+    (function() {
+        const session = localStorage.getItem('taekwondo_session');
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const sessionData = JSON.parse(session);
+        const twoHours = 2 * 60 * 60 * 1000;
+        
+        if (Date.now() - sessionData.loginTime > twoHours) {
+            localStorage.removeItem('taekwondo_session');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Only admin can access this page
+        if (sessionData.user.role !== 'admin') {
+            window.location.href = 'Data-Murid.html';
+            return;
+        }
+
+        document.getElementById('welcomeMessage').textContent = `Welcome, ${sessionData.user.nama}`;
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('taekwondo_session');
+            window.location.href = 'login.html';
+        });
+    })();
+    </script>
+    
+    <!-- Event Management Script -->
+    <script src="event-management.js"></script>
+</body>
+</html>
