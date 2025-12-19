@@ -1,0 +1,376 @@
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: black;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+}
+
+.navbar nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('Logo Loyal Transparan.jpeg') no-repeat center/cover;
+  color: white;
+  text-align: center;
+  padding-top: 170px;
+}
+
+.btn {
+  background: red;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+/* SECTION */
+.section {
+  padding: 80px 20px;
+  text-align: center;
+  scroll-margin-top: 90px;
+}
+
+.dark {
+  background: #111;
+  color: white;
+}
+
+/* SLIDER */
+.slider {
+  max-width: 600px;
+  margin: 40px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%;
+}
+
+.slide img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* DOJANG LIST */
+.list a {
+  display: block;
+  margin: 10px 0;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+/* FORM */
+form {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* SOSIAL */
+.social-links {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-links a {
+  text-decoration: none;
+  font-size: 16px;
+}
+
+/* ANIMASI */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dojang-grid {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.dojang-column h3 {
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 1.3rem;
+  text-decoration: underline;
+}
+
+/* JAKARTA: 2 kolom manual */
+.two-col {
+  display: flex;
+  gap: 40px;
+}
+
+.two-col .col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  text-align: left;
+}
+
+/* BEKASI: tetap 1 kolom sampai 4 item */
+.multi-col-limit4 {
+  display: grid;
+  grid-template-columns: 1fr; /* default: 1 kolom */
+  gap: 6px;
+  max-width: 250px;
+}
+
+/* Jika lebih dari 4 item → kolom kedua otomatis */
+.multi-col-limit4 > a:nth-child(n+5) {
+  grid-column: 2;
+}
+
+.dojang-column a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+
+.dojang-column a:hover {
+  opacity: 0.7;
+}
+
+/* Mobile: semua jadi 1 kolom */
+@media (max-width: 600px) {
+  .two-col {
+    flex-direction: column;
+  }
+  .multi-col-limit4 {
+    grid-template-columns: 1fr;
+  }
+  .multi-col-limit4 > a:nth-child(n+5) {
+    grid-column: 1;
+  }
+}
+
+.hero-subline {
+  font-size: 1.1rem;
+  margin-top: 15px;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.hero-motto {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.section-divider {
+  height: 80px;
+}
+
+/* JARAK TITLE PRESTASI KE BOX */
+#visi-misi h2 + .prestasi-row {
+  margin-top: 35px;
+}
+
+
+/* prestasi */
+.prestasi-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 10px 20px;   /* ⬅️ INI KUNCI FIX ANDROID */
+  scroll-padding-left: 20px;
+  scroll-padding-right: 20px;
+}
+
+.prestasi-card {
+  min-width: 260px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.prestasi-card h3 {
+  margin-bottom: 6px;
+  font-size: 1.2rem;
+}
+
+.prestasi-card .event {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.prestasi-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.prestasi-row::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+}
+
+.prestasi-row {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.medali {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.1rem;
+}
+
+.visi-misi .section-title {
+  color: #ffffff;
+}
+
+.visi-misi {
+  text-align: center;
+  background: #0f0f0f;
+  color: #ffffff;
+}
+
+.vm-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.vm-box {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 25px;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.vm-box h3 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.vm-box p,
+.vm-box li {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.vm-box ul {
+  padding-left: 18px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .vm-container {
+    grid-template-columns: 1fr;
+  }
+
+  .vm-box {
+    text-align: center;
+  }
+
+  .vm-box ul {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 90%;
+  }
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 38px;
+  width: auto;
+}
+
+@media (max-width: 600px) {
+  .logo-img {
+    height: 32px;
+  }
+
+  .logo span {
+    font-size: 0.95rem;
+  }
+}

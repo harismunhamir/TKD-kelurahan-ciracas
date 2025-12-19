@@ -1,17 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=login.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Loyal Taekwondo Club</title>
+  <meta name="description" content="Website resmi Loyal Taekwondo Club" />
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- Icon Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
-    <p>Redirecting to login page... Jika tidak otomatis, <a href="login.html">klik di sini</a>.</p>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+  <img src="Logo Loyal.png" alt="Loyal Taekwondo Club Logo" class="logo-img">
+  <span>LOYAL TAEKWONDO CLUB</span>
+</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#program">Program</a>
+    <a href="#dojang">Dojang</a>
+    <a href="#daftar">Daftar</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero fade-in">
+  <h1>LOYAL TAEKWONDO CLUB</h1>
+
+  <p class="hero-subline">
+    Klub taekwondo yang berfokus pada pembinaan disiplin, kesehatan fisik dan mental,
+    serta pengembangan prestasi atlet sejak usia dini.
+  </p>
+
+  <a href="#daftar" class="btn">Daftar Sekarang</a>
+</section>
+
+<!-- VISI MISI TUJUAN & PRESTASI -->
+<section id="visi-misi" class="section fade-in visi-misi">
+
+  <h2>Visi, Misi & Tujuan</h2>
+
+  <div class="vm-container">
+
+    <div class="vm-box">
+      <h3>Visi</h3>
+      <p>
+        Meningkatkan kesadaran diri akan pentingnya kesehatan dalam hidup sehari-hari,
+        sehingga terbentuknya jiwa yang sehat dan mental yang kuat.
+      </p>
+    </div>
+
+    <div class="vm-box">
+      <h3>Misi</h3>
+      <p>
+        Menjadikan beladiri taekwondo sebagai olahraga dalam meraih prestasi dan berkarya.
+      </p>
+    </div>
+
+    <div class="vm-box">
+      <h3>Tujuan</h3>
+      <ul>
+        <li>Membangun jiwa yang sehat dan mental yang kuat</li>
+        <li>Meningkatkan disiplin dalam kehidupan sehari-hari</li>
+        <li>Menumbuhkan kesadaran akan pentingnya kesehatan</li>
+        <li>Mendorong prestasi melalui olahraga beladiri taekwondo</li>
+        <li>Melatih refleks (motorik) dan daya tangkap (sensorik) anak</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- PEMBATAS INTERNAL -->
+  <div class="section-divider"></div>
+
+  <h2>Prestasi</h2>
+
+  <div class="prestasi-row">
+
+    <div class="prestasi-card">
+      <h3>2024</h3>
+      <p class="event">
+        KAPOLRI CUP V<br>
+        <small>1–4 Maret 2024</small>
+      </p>
+      <div class="medali">
+        <span>🥇 22</span>
+        <span>🥈 40</span>
+        <span>🥉 1</span>
+      </div>
+    </div>
+
+    <div class="prestasi-card">
+      <h3>2024</h3>
+      <p class="event">
+        LIGA DKI JAKARTA 8<br>
+        <small>25–27 Oktober 2024</small>
+      </p>
+      <div class="medali">
+        <span>🥇 40</span>
+        <span>🥈 23</span>
+        <span>🥉 2</span>
+      </div>
+    </div>
+
+    <div class="prestasi-card">
+      <h3>2025</h3>
+      <p class="event">
+        LIGA DKI JAKARTA 9<br>
+        <small>20–23 Februari 2025</small>
+      </p>
+      <div class="medali">
+        <span>🥇 22</span>
+        <span>🥈 40</span>
+        <span>🥉 1</span>
+      </div>
+    </div>
+
+    <div class="prestasi-card">
+      <h3>2025</h3>
+      <p class="event">MENDAGRI CUP 2025<br><small>22-24 Agustus 2025</small></p>
+
+      <div class="medali">
+        <span>🥇 18</span>
+        <span>🥈 34</span>
+        <span>🥉 1</span>
+      </div>
+    </div>
     
-    <script>
-        // Fallback redirect
-        setTimeout(function() {
-            window.location.href = 'login.html';
-        }, 100);
-    </script>
+    <div class="prestasi-card">
+      <h3>2025</h3>
+      <p class="event">LIGA DKI JAKARTA 11<br><small>11-12 Oktober 2025</small></p>
+
+      <div class="medali">
+        <span>🥇 31</span>
+        <span>🥈 36</span>
+        <span>🥉 0</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- PROGRAM & KEGIATAN -->
+<section id="program" class="section fade-in">
+  <h2>PROGRAM & KEGIATAN RUTIN</h2>
+
+  <div class="slider">
+    <button class="prev" onclick="moveSlide(-1)">❮</button>
+
+    <div class="slides">
+      <div class="slide">
+        <img src="Latihan.jpeg">
+        <p>Latihan Rutin Dojang</p>
+      </div>
+      <div class="slide">
+        <img src="Sparring-TKD.jpg">
+        <p>Sparring</p>
+      </div>
+      <div class="slide">
+        <img src="UKT.jpeg">
+        <p>Ujian Kenaikan Tingkat</p>
+      </div>
+      <div class="slide">
+        <img src="Pertandingan.jpeg">
+        <p>Kejuaraan Berjenjang</p>
+      </div>
+    </div>
+
+    <button class="next" onclick="moveSlide(1)">❯</button>
+  </div>
+</section>
+
+<!-- DOJANG -->
+<section id="dojang" class="section dark fade-in">
+  <h2>LOKASI DOJANG</h2>
+
+  <div class="dojang-grid">
+
+    <!-- Jakarta -->
+    <div class="dojang-column">
+      <h3>Jakarta</h3>
+      <div class="two-col">
+        <div class="col">
+          <a href="https://maps.app.goo.gl/Lzuyetw2cuCfAuZc7" target="_blank">📍 SMPN 188</a>
+          <a href="https://maps.app.goo.gl/9qRQRkmurHjas94s5" target="_blank">📍 SMPN 174</a>
+          <a href="https://maps.app.goo.gl/QcW6Rx9GA2V56Ggw8" target="_blank">📍 SMAN 58</a>
+          <a href="https://maps.app.goo.gl/Nmzum1wU6G7ip3S38" target="_blank">📍 SMAN 104</a>
+        </div>
+        <div class="col">
+          <a href="https://maps.app.goo.gl/fxCgzUeRfqpbgdn57" target="_blank">📍 Masjid Fathurrahman</a>
+          <a href="https://maps.app.goo.gl/gyQhNTaAxZdghAAt9" target="_blank">📍 Kantor Kelurahan Ciracas</a>
+          <a href="https://maps.app.goo.gl/wmiYeqwRBCEDKgqk9" target="_blank">📍 THB</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bekasi (format sama dengan Jakarta) -->
+    <div class="dojang-column">
+      <h3>Bekasi</h3>
+      <div class="two-col">
+        <div class="col">
+          <a href="https://maps.app.goo.gl/mHsDUq2JPYeqJVFU6" target="_blank">📍 KFC Jatiwarna (Ex Kopi Qilu)</a>
+          <a href="https://maps.app.goo.gl/KCiiFwvPjVVD1rzq9" target="_blank">📍 Paradisa Cendikia</a>
+          <a href="https://maps.app.goo.gl/ffTkvFANiBgxYDn77" target="_blank">📍 Perum Wahana Blok O</a>
+        </div>
+        <div class="col">
+          <a href="https://maps.app.goo.gl/q4MdL9pJypjqZYqj9" target="_blank">📍 SD 01 Harjamukti</a>
+          <a href="https://maps.app.goo.gl/EUDG9bQU4rN28q5q6" target="_blank">📍 Nassa School</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DAFTAR -->
+<section id="daftar" class="section fade-in">
+  <h2>PENDAFTARAN</h2>
+
+  <form onsubmit="sendWhatsApp(event)">
+    <input type="text" id="nama" placeholder="Nama Lengkap" required />
+    <input type="text" id="wa" placeholder="No WhatsApp" required />
+    <textarea id="pesan" placeholder="Pesan"></textarea>
+    <button type="submit">Kirim via WhatsApp</button>
+  </form>
+
+  <!-- SOSIAL MEDIA -->
+  <div class="social-links">
+    <a href="https://instagram.com/loyaltaekwondoclub" target="_blank">
+      <i class="fab fa-instagram"></i> loyaltaekwondoclub
+    </a>
+    <a href="https://tiktok.com/@loyal.taekwondo" target="_blank">
+      <i class="fab fa-tiktok"></i> loyal.taekwondo
+    </a>
+    <a href="https://www.facebook.com/share/g/18ucmPAimn/" target="_blank">
+      <i class="fab fa-facebook"></i> Loyal Moners Taekwondo Club
+    </a>
+  </div>
+</section>
+
+<script src="script.js"></script>
 </body>
 </html>
